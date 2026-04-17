@@ -2,4 +2,4 @@ cmake_minimum_required(VERSION 3.16)
 
 project("SmartLinkForDrCOM")
 
-add_subdirectory("SmartLinkForDrCOM")
+add_subdirectory("src")

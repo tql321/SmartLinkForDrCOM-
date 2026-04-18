@@ -1,4 +1,4 @@
-﻿#include "AccountManager.h"
+#include "AccountManager.h"
 #include "../models/DataMaid.h"
 #include "../entity/LoginDataEntiry.h"
 #include "../entity/UserEntity.h"
@@ -115,14 +115,7 @@ void AccountManager::onLogout()
 	QUrl url("https://192.168.125.13:802/eportal/portal/logout");
 	QUrlQuery query;
 
-	QString localIp;
-	QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
-	for (const QHostAddress& ip : ipAddressesList) {
-		if (ip != QHostAddress::LocalHost && ip.toIPv4Address()) {
-			localIp = ip.toString();
-			break;
-		}
-	}
+	QString localIp = DATAMAID.getLocalIp();
 
 	query.addQueryItem("wlan_user_ip", localIp);
 	url.setQuery(query);

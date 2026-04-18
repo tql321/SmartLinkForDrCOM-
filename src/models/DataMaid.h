@@ -47,6 +47,7 @@ public:
 	bool getEnableForceLogin() const { return m_enableForceLogin; };
 	int getSimulatedBrowseInterval() const { return m_simulatedBrowseInterval; };
 	bool getEnableAutoLoginCB() const { return m_enableAutoLoginCB; };
+	QString getLocalIp() const;
 
 private:
 	qint32 m_simulatedBrowseInterval;

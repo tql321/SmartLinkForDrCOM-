@@ -30,9 +30,9 @@ SmartLinkForDrCOM::SmartLinkForDrCOM(DataMaid* dataMaid, AccountManager* account
 		QString curPass = ui->passwordLE->text();
 		m_accountManager->onLogin(curUser, curPass);
 	});
-	// connect(ui->logoutBtn, &QPushButton::clicked, this, [this]() {
-	// m_accountManager->onLogout();
-	// });
+	 connect(ui->logoutBtn, &QPushButton::clicked, this, [this]() {
+	 m_accountManager->onLogout();
+	 });
 	connect(ui->simulatedBrowseIntervalSB, QOverload<int>::of(&QSpinBox::valueChanged), m_dataMaid, &DataMaid::simulatedBrowseIntervalChanged);
 	connect(ui->enableAutoStartCB, &QCheckBox::toggled, m_dataMaid, &DataMaid::enableAutoStartChanged);
 	connect(ui->enableAutoLoginCB, &QCheckBox::toggled, m_dataMaid, &DataMaid::enableAutoLoginChanged);

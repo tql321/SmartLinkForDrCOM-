@@ -19,6 +19,29 @@ KeepLiveManager::KeepLiveManager()
     // 检测网络状态变化的结果，并根据结果调整保活策略
     connect(m_networkDetector, &NetworkDetector::sigDetectionFinished,
         this, &KeepLiveManager::handleNetworkState);
+
+    // 掉线强制重连检测定时器
+    connect(m_loginTimer, &QTimer::timeout, this, [this]() {
+        if (DATAMAID.getEnableForceLogin()) {
+            m_networkDetector->startDetection();
+        }
+    });
+    
+    // 初始化定时器状态
+    if (DATAMAID.getEnableForceLogin()) {
+        m_loginTimer->start(10000); // 10秒检查一次
+    }
+
+    // 监听实时变更
+    connect(&DATAMAID, &DataMaid::sigEnableForceLoginChanged, this, [this]() {
+        if (DATAMAID.getEnableForceLogin()) {
+            if (!m_loginTimer->isActive()) {
+                m_loginTimer->start(10000);
+            }
+        } else {
+            m_loginTimer->stop();
+        }
+    });
 }
 
 void KeepLiveManager::handleNetworkState(NetworkDetector::NetworkState state)

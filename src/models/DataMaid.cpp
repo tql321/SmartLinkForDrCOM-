@@ -6,6 +6,7 @@
 #include"ConfigHelper.h"
 #include"./models/DataMaid.h"
 #include"ConfigHelper.h"
+#include<QNetworkInterface>
 DataMaid::DataMaid()
 {
 	memberIni();
@@ -35,6 +36,49 @@ void DataMaid::memberIni()
 	m_simulatedBrowseInterval = ConfigHelper::getSetting("simulatedBrowseInterval", 60).toInt();
 	m_enableAutoLoginCB = ConfigHelper::getSetting("enableAutoLoginCB", true).toBool();
 	m_enableForceLogin = ConfigHelper::getSetting("enableForceLogin", true).toBool();
+}
+
+QString DataMaid::getLocalIp() const
+{
+	// 遍历所有网络接口，判断是否有活动的非本地回环网卡
+	const QList<QNetworkInterface> interfaces = QNetworkInterface::allInterfaces();
+	for (const QNetworkInterface& iface : interfaces) {
+		// 网卡已启动，正在运行，并且不是本地回环(127.0.0.1)
+		if (iface.flags().testFlag(QNetworkInterface::IsUp) &&
+			iface.flags().testFlag(QNetworkInterface::IsRunning) &&
+			!iface.flags().testFlag(QNetworkInterface::IsLoopBack)) {
+
+			// 排除常见的虚拟网口、代理网卡、虚拟机网段
+			QString name = iface.humanReadableName().toLower();
+			if (name.contains("vmware") ||
+				name.contains("virtual") ||
+				name.contains("vbox") ||
+				name.contains("vpn") ||
+				name.contains("tap") ||
+				name.contains("tun") ||
+				name.contains("vethernet") ||
+				name.contains("npcap") ||
+				name.contains("wsl") ||
+				name.contains("singbox") ||
+				name.contains("clash") ||
+				name.contains("v2ray")) {
+				continue;
+			}
+
+			// 确保网卡确实分配了IPv4地址
+			const QList<QNetworkAddressEntry> entries = iface.addressEntries();
+			for (const QNetworkAddressEntry& entry : entries) {
+				if (entry.ip().protocol() == QAbstractSocket::IPv4Protocol) {
+					QString ipString = entry.ip().toString();
+					// 排除无效的 APIPA (169.254.x.x) 和回环地址
+					if (!ipString.startsWith("169.254.") && !ipString.startsWith("127.")) {
+						return ipString;
+					}
+				}
+			}
+		}
+	}
+	return QString();
 }
 
 void DataMaid::curUsernameChanged(const QString& username)

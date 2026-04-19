@@ -52,6 +52,11 @@ SmartLinkForDrCOM::SmartLinkForDrCOM(DataMaid* dataMaid, AccountManager* account
 	connect(m_dataMaid, &DataMaid::sigEnableForceLoginChanged, this, [this]() {
 		ui->enableForceLogin->setChecked(m_dataMaid->getEnableForceLogin());
 	});
+	connect(m_dataMaid, &DataMaid::sigLogAdded, this, [this](const LogDataEntity& log) {
+		QString logStr = QString("[%1] [%2] %3").arg(log.logTime).arg(log.logLevel).arg(log.logMessage);
+		ui->logPT->appendPlainText(logStr);
+	});
+
 	m_trayManager = new SystemTrayManager(this);
 
 	connect(m_trayManager, &SystemTrayManager::showWindowRequested, this, [this]() {

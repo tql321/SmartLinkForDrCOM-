@@ -2,6 +2,7 @@
 #include <QString>
 #include <QObject>
 #include "../entity/UserEntity.h"
+#include "../entity/logDataEntity.h"
 #include "../mould/Singleton.h"
 #define DATAMAID DataMaid::instance()
 class DataMaid : public QObject, public Singleton<DataMaid>
@@ -26,6 +27,7 @@ signals:
 	void sigUsersInit(QString& curUsername, QString& curPassword);
 	void sigEnableAutoLoginChanged();
 	void sigEnableForceLoginChanged();
+	void sigLogAdded(const LogDataEntity& log);
 public slots:
 	void curUsernameChanged(const QString& username);
 	void curPasswordChanged(const QString& password);
@@ -35,6 +37,7 @@ public slots:
 	void enableForceLoginChanged(bool checked);
 	void simulatedBrowseIntervalChanged(int value);
 	void enableAutoStartChanged(bool value);
+	void addLog(const LogDataEntity& log);
 public:
 	void addUser(const UserEntity& user);
 	void sortUsers();

@@ -6,6 +6,7 @@
 #include"../mould/Singleton.h"
 class QNetworkAccessManager;
 class QNetworkConfigurationManager;
+class QTimer;
 class NetworkDetector : public QObject
 {
 	Q_OBJECT
@@ -35,6 +36,8 @@ private:
 	QNetworkAccessManager* m_netManager;
 	QNetworkConfigurationManager* m_netConfigManager;
 	bool m_lastOnlineState = true;
+	QTimer* m_forceLoginTimer;
+	QTimer* m_autoLoginTimer;
 private:
 	// 内部的两步探测逻辑
 	void probeGateway();       // 第一步：探测内网

@@ -1,4 +1,8 @@
 #include "KeepLiveManager.h"
+#include "KeepLiveManager.h"
+#include "KeepLiveManager.h"
+#include "KeepLiveManager.h"
+#include "KeepLiveManager.h"
 #include "AccountManager.h"
 #include "../models/DataMaid.h"
 #include <QNetworkRequest>
@@ -10,38 +14,16 @@
 // 恢复的占位符结构：由于之前未经追踪的 KeepLiveManager 源码被 git clean 意外删除，
 // 此处保留它在数据库中的原型供后续开发。
 KeepLiveManager::KeepLiveManager()
-    : m_loginTimer(new QTimer(this)),
-    m_browseTimer(new QTimer(this)),
+    : m_browseTimer(new QTimer(this)),
     m_networkManager(new QNetworkAccessManager(this)),
     m_networkDetector(new NetworkDetector(m_networkManager, this))
+
 {
     startBrowseTimer();
     // 检测网络状态变化的结果，并根据结果调整保活策略
     connect(m_networkDetector, &NetworkDetector::sigDetectionFinished,
         this, &KeepLiveManager::handleNetworkState);
 
-    // 掉线强制重连检测定时器
-    connect(m_loginTimer, &QTimer::timeout, this, [this]() {
-        if (DATAMAID.getEnableForceLogin()) {
-            m_networkDetector->startDetection();
-        }
-    });
-    
-    // 初始化定时器状态
-    if (DATAMAID.getEnableForceLogin()) {
-        m_loginTimer->start(10000); // 10秒检查一次
-    }
-
-    // 监听实时变更
-    connect(&DATAMAID, &DataMaid::sigEnableForceLoginChanged, this, [this]() {
-        if (DATAMAID.getEnableForceLogin()) {
-            if (!m_loginTimer->isActive()) {
-                m_loginTimer->start(10000);
-            }
-        } else {
-            m_loginTimer->stop();
-        }
-    });
 }
 
 void KeepLiveManager::handleNetworkState(NetworkDetector::NetworkState state)
@@ -100,6 +82,7 @@ void KeepLiveManager::stopBrowseTimer()
         qDebug() << "保活服务已停止。";
     }
 }
+
 
 void KeepLiveManager::sendHeartbeat()
 {

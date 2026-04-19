@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <QObject>
 #include <QTimer>
 #include <QNetworkAccessManager>
@@ -13,6 +13,8 @@ public:
 	void startBrowseTimer();
 	void stopBrowseTimer();
 	void sendHeartbeat();
+	QTimer* getBrowseTimer() const { return m_browseTimer; };
+
     
 public slots:
     void handleNetworkState(NetworkDetector::NetworkState state);
@@ -21,7 +23,7 @@ private:
     ~KeepLiveManager() = default;
 
     QTimer* m_browseTimer;
-    QTimer* m_loginTimer;
+
     QNetworkAccessManager* m_networkManager;
 	NetworkDetector* m_networkDetector;
 };

@@ -189,3 +189,8 @@ void DataMaid::enableAutoStartChanged(bool value)
 		reg.remove(appName);
 	}
 }
+
+void DataMaid::addLog(const LogDataEntity& log)
+{
+	emit sigLogAdded(log);
+}

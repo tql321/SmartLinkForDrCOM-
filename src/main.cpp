@@ -33,6 +33,10 @@ void customMessageHandler(QtMsgType type, const QMessageLogContext &context, con
 
 int main(int argc, char* argv[])
 {
+	QApplication app(argc, argv);
+
+	QApplication::setOrganizationName(ORG_NAME);
+	QApplication::setApplicationName(APP_NAME);
 	qRegisterMetaType<QList<UserEntity>>("QList<UserEntity>");
 	qRegisterMetaTypeStreamOperators<QList<UserEntity>>("QList<UserEntity>");
 	qRegisterMetaType<UserEntity>("UserEntity");
@@ -40,10 +44,7 @@ int main(int argc, char* argv[])
 	qRegisterMetaType<LogDataEntity>("LogDataEntity");
 
 	qInstallMessageHandler(customMessageHandler);
-
-	QApplication app(argc, argv);
-	QApplication::setOrganizationName(ORG_NAME);
-	QApplication::setApplicationName(APP_NAME);
+	
 
 	// Because they inherit Singleton, we pass their instances directly
 	SmartLinkForDrCOM window(&DataMaid::instance(), &AccountManager::instance());

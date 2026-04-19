@@ -55,6 +55,7 @@ public:
 	QString getAuthServerIp()const{return m_authServerIp;}
 	QString getAuthAddress()const { return m_authAddress; }
 	QString getLocalIp() const;
+	QString getlogoutAddress()const {return m_logoutAddress;}
 
 	
 
@@ -68,4 +69,5 @@ private:
 	bool m_enableForceLogin;
 	QString m_authServerIp;
 	QString m_authAddress;
+	QString m_logoutAddress;
 };

@@ -12,7 +12,6 @@
 #include<QString>
 #include <QRegularExpression>
 #include<QRegularExpression>
-const QString GATEWAY_URL = DATAMAID.getAuthServerIp();
 // MIUI 204 探测接口
 const QString CPD_URL = "http://connect.rom.miui.com/generate_204";
 
@@ -154,7 +153,8 @@ bool NetworkDetector::checkCurrentOnlineState()
 // ================= 第一步：探测内网网关 =================
 void NetworkDetector::probeGateway()
 {
-	QNetworkRequest request((QUrl(GATEWAY_URL)));
+	QString gwUrl = "http://" + DATAMAID.getAuthServerIp();
+	QNetworkRequest request((QUrl(gwUrl)));
 	QNetworkReply* reply = m_netManager->get(request);
 
 	// Qt5 兼容的 1.5 秒超时机制

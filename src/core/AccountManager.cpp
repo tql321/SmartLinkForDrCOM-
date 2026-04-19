@@ -112,12 +112,14 @@ void AccountManager::onLogin(const QString& username, const QString& password)
 
 void AccountManager::onLogout()
 {
-	QUrl url(DATAMAID.getAuthAddress());
+	QUrl url(DATAMAID.getlogoutAddress());
 	QUrlQuery query;
 
 	QString localIp = DATAMAID.getLocalIp();
 
 	query.addQueryItem("wlan_user_ip", localIp);
+	//query.addQueryItem("user_account",DATAMAID.getCurUsername());
+	//query.addQueryItem("user_password", DATAMAID.getCurPassword());
 	url.setQuery(query);
 	QNetworkRequest request(url);
 	QSslConfiguration sslConfig = request.sslConfiguration();

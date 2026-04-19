@@ -35,11 +35,12 @@ void DataMaid::memberIni()
 	//emit sigUsersInit(m_curUsername, m_curPassword);
 
 	m_enableAutoStart = ConfigHelper::getSetting("enableAutoStart", true).toBool();
-	m_simulatedBrowseInterval = ConfigHelper::getSetting("simulatedBrowseInterval", 60).toInt();
+	m_simulatedBrowseInterval = ConfigHelper::getSetting("simulatedBrowseInterval", 30).toInt();
 	m_enableAutoLoginCB = ConfigHelper::getSetting("enableAutoLoginCB", true).toBool();
 	m_enableForceLogin = ConfigHelper::getSetting("enableForceLogin", true).toBool();
 	m_authServerIp = ConfigHelper::getSetting("authServerIp", "192.168.125.13").toString();
 	m_authAddress = "https://" + m_authServerIp + ":802/eportal/portal/login";
+	m_logoutAddress = "https://" + m_authServerIp + ":802/eportal/portal/logout";
 	// 启动时同步开机自启状态到注册表
 	enableAutoStartChanged(m_enableAutoStart);
 }
@@ -101,7 +102,6 @@ void DataMaid::curPasswordChanged(const QString& password)
 		return;
 	}
 	m_curPassword = password;
-	ConfigHelper::setSetting("curPassword", m_curPassword);
 	emit sigCurPasswordChanged();
 }
 

@@ -47,13 +47,6 @@
                </property>
               </widget>
              </item>
-             <item row="1" column="0">
-              <widget class="QLabel" name="label_2">
-               <property name="text">
-                <string>密码</string>
-               </property>
-              </widget>
-             </item>
              <item row="1" column="1">
               <widget class="QLineEdit" name="passwordLE">
                <property name="toolTip">
@@ -63,6 +56,16 @@
                 <enum>QLineEdit::Password</enum>
                </property>
               </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="label_2">
+               <property name="text">
+                <string>密码</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QComboBox" name="networkTypeCB"/>
              </item>
             </layout>
            </item>

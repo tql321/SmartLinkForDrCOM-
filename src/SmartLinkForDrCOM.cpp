@@ -27,6 +27,11 @@ SmartLinkForDrCOM::SmartLinkForDrCOM(DataMaid* dataMaid, AccountManager* account
 	connect(ui->accountCB, &QComboBox::currentTextChanged, m_dataMaid, &DataMaid::curUsernameChanged);
 	connect(ui->accountCB, QOverload<int>::of(&QComboBox::currentIndexChanged), m_dataMaid, &DataMaid::userItemChanged);
 	connect(ui->passwordLE, &QLineEdit::textChanged, m_dataMaid, &DataMaid::curPasswordChanged);
+	connect(ui->networkTypeCB, QOverload<int>::of(&QComboBox::currentIndexChanged), this, [this](int index) {
+		if (index >= 0) {
+			m_dataMaid->networkTypeChanged(ui->networkTypeCB->itemText(index), ui->networkTypeCB->itemData(index).toString());
+		}
+	});
 	connect(ui->authServerIpE, &QLineEdit::textChanged, m_dataMaid, &DataMaid::authServerIpChanged);
 	connect(ui->loginBtn, &QPushButton::clicked, this, [this]() {
 		QString curUser = ui->accountCB->currentText();
@@ -103,6 +108,19 @@ void SmartLinkForDrCOM::initUI() {
 	ui->enableAutoLoginCB->setChecked(m_dataMaid->getEnableAutoLogin());
 	ui->enableForceLogin->setChecked(m_dataMaid->getEnableForceLogin());
 	ui->authServerIpE->setText(m_dataMaid->getAuthServerIp());
+	QMap<QString, QString>networkType;
+	networkType.insert(QString::fromUtf8("校园网"), "");
+	networkType.insert(QString::fromUtf8("中国电信"), "@ctc");
+	networkType.insert(QString::fromUtf8("中国联通"), "@cuc");
+	networkType.insert(QString::fromUtf8("中国移动"), "@cmc");
+	ui->networkTypeCB->clear();
+	for (auto it = networkType.begin(); it != networkType.end(); ++it) {
+		ui->networkTypeCB->addItem(it.key(), it.value());
+		if (m_dataMaid->getNetworkType() == it.value()) {
+			ui->networkTypeCB->setCurrentText(it.key());
+		}
+	}
+
 }
 
 void SmartLinkForDrCOM::closeEvent(QCloseEvent* event)

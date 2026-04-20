@@ -59,7 +59,8 @@ void AccountManager::onLogin(const QString& username, const QString& password)
 	qDebug() << "Qt 编译时使用的 SSL 版本:" << QSslSocket::sslLibraryBuildVersionString();
 	qDebug() << "当前运行时的 SSL 版本:" << QSslSocket::sslLibraryVersionString();
 	LoginDataEntiry loginData;
-	loginData.user_account = username;
+	//loginData.user_account = username;
+	loginData.user_account = username+DATAMAID.getNetworkType();
 	loginData.user_password = password;
 	QUrl url(DATAMAID.getAuthAddress());
 	QUrlQuery query;

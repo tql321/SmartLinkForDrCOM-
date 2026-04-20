@@ -42,6 +42,7 @@ void DataMaid::memberIni()
 	m_authServerIp = ConfigHelper::getSetting("authServerIp", "192.168.125.13").toString();
 	m_authAddress = "https://" + m_authServerIp + ":802/eportal/portal/login";
 	m_logoutAddress = "https://" + m_authServerIp + ":802/eportal/portal/logout";
+	m_networkType = ConfigHelper::getSetting("networkType", "").toString();//默认校园网
 	// 启动时同步开机自启状态到注册表
 	enableAutoStartChanged(m_enableAutoStart);
 }
@@ -229,4 +230,13 @@ void DataMaid::authServerIpChanged(const QString& ip)
 	m_logoutAddress = "https://" + m_authServerIp + ":802/eportal/portal/logout";
 	ConfigHelper::setSetting("authServerIp", m_authServerIp);
 	emit sigAuthServerIpChanged();
+}
+
+void DataMaid::networkTypeChanged(const QString& name, const QString& value)
+{
+	qDebug() << "Network type changed:" << name << ", suffix/value:" << value;
+	if (m_networkType != value) {
+		m_networkType = value;
+		ConfigHelper::setSetting("networkType", m_networkType);
+	}
 }

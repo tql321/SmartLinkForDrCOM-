@@ -40,6 +40,7 @@ public slots:
 	void enableAutoStartChanged(bool value);
 	void addLog(const LogDataEntity& log);
 	void authServerIpChanged(const QString& ip);
+	void networkTypeChanged(const QString& name, const QString& value);
 public:
 	void addUser(const UserEntity& user);
 	void sortUsers();
@@ -56,7 +57,7 @@ public:
 	QString getAuthAddress()const { return m_authAddress; }
 	QString getLocalIp() const;
 	QString getlogoutAddress()const {return m_logoutAddress;}
-
+	QString getNetworkType() const { return m_networkType; }
 	
 
 private:
@@ -70,4 +71,5 @@ private:
 	QString m_authServerIp;
 	QString m_authAddress;
 	QString m_logoutAddress;
+	QString m_networkType;
 };

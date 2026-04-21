@@ -1,4 +1,4 @@
-#include "dataMaid.h"
+#include "DataMaid.h"
 #include<QSettings>
 #include<algorithm>
 #include<QComboBox>

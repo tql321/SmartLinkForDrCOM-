@@ -69,18 +69,20 @@ void AccountManager::onLogin(const QString& username, const QString& password)
 	url.setQuery(query);
 	QNetworkRequest request(url);
 	QSslConfiguration sslConfig = request.sslConfiguration();
-	sslConfig.setPeerVerifyMode(QSslSocket::VerifyPeer);
+	sslConfig.setPeerVerifyMode(QSslSocket::VerifyNone);
 	request.setSslConfiguration(sslConfig);
-	request.setPeerVerifyName("yc.gxnu.edu.cn");
-	request.setRawHeader("Host", "yc.gxnu.edu.cn");
+	//废弃伪造host头部的方式来绕过 SSL 验证，因为每个学校或者校区的域名可能不一致，而且这种方式在某些环境下可能会被服务器拒绝
+	//request.setPeerVerifyName("yc.gxnu.edu.cn");
+	//request.setRawHeader("Host", "yc.gxnu.edu.cn");
 
 	QNetworkReply* reply = networkManager->get(request);
 
 	connect(reply, &QNetworkReply::sslErrors, this,
 		[reply](const QList<QSslError>& errors) {
 			for (const auto& error : errors) {
-				qDebug() << "SSL error:" << error.errorString();
+				qDebug() << "忽略 SSL 错误:" << error.errorString();
 			}
+			reply->ignoreSslErrors();
 		});
 	connect(reply, &QNetworkReply::finished, this, [reply, loginData, this]() {
 		const int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -124,12 +126,22 @@ void AccountManager::onLogout()
 	url.setQuery(query);
 	QNetworkRequest request(url);
 	QSslConfiguration sslConfig = request.sslConfiguration();
-	sslConfig.setPeerVerifyMode(QSslSocket::VerifyPeer);
+	sslConfig.setPeerVerifyMode(QSslSocket::VerifyNone);
 	request.setSslConfiguration(sslConfig);
-	request.setPeerVerifyName("yc.gxnu.edu.cn");
-	request.setRawHeader("Host", "yc.gxnu.edu.cn");
+	//废弃伪造host头部的方式来绕过 SSL 验证，因为每个学校或者校区的域名可能不一致，而且这种方式在某些环境下可能会被服务器拒绝
+	//request.setPeerVerifyName("yc.gxnu.edu.cn");
+	//request.setRawHeader("Host", "yc.gxnu.edu.cn");
 
 	QNetworkReply* reply = networkManager->get(request);
+	
+	connect(reply, &QNetworkReply::sslErrors, this,
+		[reply](const QList<QSslError>& errors) {
+			for (const auto& error : errors) {
+				qDebug() << "忽略 SSL 错误:" << error.errorString();
+			}
+			reply->ignoreSslErrors();
+		});
+
 	connect(reply, &QNetworkReply::finished, this, [reply, this]() {
 		const int statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 

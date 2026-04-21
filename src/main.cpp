@@ -5,6 +5,8 @@
 #include "core/AccountManager.h"
 #include "core/KeepLiveManager.h"
 #include <QDateTime>
+#include <QSharedMemory>
+#include <QMessageBox>
 
 void customMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
@@ -34,6 +36,16 @@ void customMessageHandler(QtMsgType type, const QMessageLogContext &context, con
 int main(int argc, char* argv[])
 {
 	QApplication app(argc, argv);
+
+	// 使用共享内存确保单例运行
+	QSharedMemory sharedMemory("SmartLinkForDrCOM_SingleInstance_Key");
+	if (sharedMemory.attach()) {
+		QMessageBox::warning(nullptr, QString::fromUtf8("提示"), QString::fromUtf8("SmartLinkForDrCOM 已经在运行中。\n请检查系统托盘。"));
+		return 0;
+	}
+	if (!sharedMemory.create(1)) {
+		return 1;
+	}
 
 	QApplication::setOrganizationName(ORG_NAME);
 	QApplication::setApplicationName(APP_NAME);

@@ -25,6 +25,7 @@ KeepLiveManager::KeepLiveManager()
         qDebug() << "✅ 手动登录成功！启动保活心跳...";
         startBrowseTimer();
     });
+    
 }
 
 void KeepLiveManager::handleNetworkState(NetworkDetector::NetworkState state)
@@ -39,7 +40,7 @@ void KeepLiveManager::handleNetworkState(NetworkDetector::NetworkState state)
         qDebug() << "处于校园网，且未认证！";
 
         // 检查用户是否开启了“自动登录”设置
-        if (DATAMAID.getEnableAutoLogin()) { // 假设你有个获取配置的接口
+        if (DATAMAID.getEnableAutoLogin()||DATAMAID.getEnableForceLogin()) { // 假设你有个获取配置的接口
             qDebug() << "准备自动登录...";
             QString user = DATAMAID.getCurUsername();
             QString pwd = DATAMAID.getCurPassword();

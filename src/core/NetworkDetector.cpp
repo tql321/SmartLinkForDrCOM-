@@ -12,9 +12,6 @@
 #include<QString>
 #include <QRegularExpression>
 #include<QRegularExpression>
-// MIUI 204 探测接口
-const QString CPD_URL = "http://connect.rom.miui.com/generate_204";
-
 NetworkDetector::NetworkDetector()
 	: QObject(nullptr)
 	, m_netManager(new QNetworkAccessManager(this))

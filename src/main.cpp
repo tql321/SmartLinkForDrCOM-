@@ -64,6 +64,7 @@ int main(int argc, char* argv[])
 
 	// Start Keep-Alive tasks if needed
 	KeepLiveManager::instance();
+	NetworkDetector::instance();
 
 	return app.exec();
 }

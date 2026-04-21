@@ -22,7 +22,7 @@ SmartLinkForDrCOM::SmartLinkForDrCOM(DataMaid* dataMaid, AccountManager* account
 	, m_accountManager(accountManager)
 {
 	ui->setupUi(this);
-	this->setWindowIcon(QIcon(":/resources/logo/logo.png"));
+	
 	initUI();
 	connect(ui->accountCB, &QComboBox::currentTextChanged, m_dataMaid, &DataMaid::curUsernameChanged);
 	connect(ui->accountCB, QOverload<int>::of(&QComboBox::currentIndexChanged), m_dataMaid, &DataMaid::userItemChanged);
@@ -98,6 +98,7 @@ void SmartLinkForDrCOM::usersChanged(QList<UserEntity>& users)
 }
 
 void SmartLinkForDrCOM::initUI() {
+	this->setWindowIcon(QIcon(":/resources/logo/logo.png"));
 	for (const UserEntity& user : m_dataMaid->getUsers()) {
 		ui->accountCB->addItem(user.username);
 	}

@@ -49,5 +49,6 @@ private:
 	void probeCaptivePortal(); // 第二步：探测外网 204
 	
 	bool checkCurrentOnlineState();
+	const QString CPD_URL = "http://connect.rom.miui.com/generate_204";
 };
 #endif // NETWORKDETECTOR_H

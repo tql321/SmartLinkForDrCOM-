@@ -6,6 +6,8 @@
 #include <QStandardPaths>
 #include <QDir>
 #include <QFileInfo>
+#include <QApplication>
+#include <QProcess>
 
 namespace {
     QString getConfigPath() {
@@ -35,5 +37,11 @@ QVariant ConfigHelper::getSetting(const QString& key, const QVariant& defaultVal
 void ConfigHelper::setSetting(const QString& key, const QVariant& value) {
     QSettings settings(getConfigPath(), QSettings::IniFormat);
     settings.setValue(key, value);
+    settings.sync();
+}
+
+void ConfigHelper::removeAllSettings() {
+    QSettings settings(getConfigPath(), QSettings::IniFormat);
+    settings.clear();
     settings.sync();
 }

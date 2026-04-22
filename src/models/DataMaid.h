@@ -41,6 +41,7 @@ public slots:
 	void addLog(const LogDataEntity& log);
 	void authServerIpChanged(const QString& ip);
 	void networkTypeChanged(const QString& name, const QString& value);
+	void reset();
 public:
 	void addUser(const UserEntity& user);
 	void sortUsers();

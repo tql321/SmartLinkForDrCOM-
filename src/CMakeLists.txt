@@ -57,6 +57,28 @@ set_target_properties(${PROJECT_NAME}
         WIN32_EXECUTABLE TRUE
 )
 
+# 添加 windeployqt 自动打包步骤
+if(WIN32)
+    # 查找 windeployqt
+    get_target_property(_qt5_core_location Qt5::Core LOCATION)
+    get_filename_component(_qt5_bin_dir ${_qt5_core_location} DIRECTORY)
+    find_program(WINDEPLOYQT_EXECUTABLE windeployqt HINTS "${_qt5_bin_dir}")
+
+    if(WINDEPLOYQT_EXECUTABLE)
+        add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND "${WINDEPLOYQT_EXECUTABLE}"
+            "--no-translations"
+            "--no-compiler-runtime"
+            "--no-system-d3d-compiler"
+            "--no-opengl-sw"
+            "$<TARGET_FILE:${PROJECT_NAME}>"
+            COMMENT "Running windeployqt for ${PROJECT_NAME}..."
+        )
+    else()
+        message(WARNING "windeployqt not found!" " ")
+    endif()
+endif()
+
 target_link_libraries(${PROJECT_NAME}
     PRIVATE
         Qt5::Core

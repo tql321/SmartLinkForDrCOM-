@@ -54,6 +54,7 @@ SmartLinkForDrCOM::SmartLinkForDrCOM(DataMaid* dataMaid, AccountManager* account
 			qDebug() << "解析 Portal IP 失败，保留原配置。";
 		}
 	});
+	connect(ui->resetBtn, &QPushButton::clicked, m_dataMaid, &DataMaid::reset);
 	connect(m_dataMaid, &DataMaid::sigUsersChanged, this, &SmartLinkForDrCOM::usersChanged);
 	connect(m_accountManager, &AccountManager::sigLoginSuccess, m_dataMaid, &DataMaid::loginSuccess);
 	connect(m_dataMaid, &DataMaid::sigCurUsernameChanged, this, [this]() {

@@ -11,6 +11,7 @@
 #include<QDir>
 #include<QFile>
 #include<QTextStream>
+#include<QProcess>
 DataMaid::DataMaid()
 {
 	memberIni();
@@ -239,4 +240,10 @@ void DataMaid::networkTypeChanged(const QString& name, const QString& value)
 		m_networkType = value;
 		ConfigHelper::setSetting("networkType", m_networkType);
 	}
+}
+void DataMaid::reset()
+{
+	ConfigHelper::removeAllSettings();
+	qApp->quit();
+	QProcess::startDetached(qApp->arguments()[0], qApp->arguments());
 }

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=SmartLinkForDrCOM
+Comment=DrCOM Auto Login Client for Campus Network
+Exec=SmartLinkForDrCOM
+Icon=SmartLinkForDrCOM
+Terminal=false
+Categories=Network;Utility;

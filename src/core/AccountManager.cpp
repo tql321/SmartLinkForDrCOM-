@@ -14,6 +14,7 @@
 #include <QJsonParseError>
 #include <QJsonObject>
 #include <QNetworkInterface>
+#include"NetworkDetector.h"
 
 AccountManager::AccountManager()
 	:networkManager(new QNetworkAccessManager(this))
@@ -55,6 +56,13 @@ JsonReturnEntity AccountManager::parseNetworkReply(const QString& responseString
 
 void AccountManager::onLogin(const QString& username, const QString& password)
 {
+	int curLinkMethod = NetworkDetector::instance().curLinkMethod();
+	if (curLinkMethod == 2) {//连接的是网线
+		DATAMAID.setAuthAddress("https://" + DATAMAID.getAuthServerIp() + "/drcom/login");
+	}
+	else {
+		DATAMAID.setAuthAddress("https://" + DATAMAID.getAuthServerIp() + ":802/eportal/portal/login");
+	}
 	qDebug() << "是否支持 SSL:" << QSslSocket::supportsSsl();
 	qDebug() << "Qt 编译时使用的 SSL 版本:" << QSslSocket::sslLibraryBuildVersionString();
 	qDebug() << "当前运行时的 SSL 版本:" << QSslSocket::sslLibraryVersionString();
@@ -64,8 +72,16 @@ void AccountManager::onLogin(const QString& username, const QString& password)
 	loginData.user_password = password;
 	QUrl url(DATAMAID.getAuthAddress());
 	QUrlQuery query;
-	query.addQueryItem("user_account", loginData.user_account);
-	query.addQueryItem("user_password", loginData.user_password);
+	if (curLinkMethod == 2) {//连接的是网线
+		query.addQueryItem("callback", "dr1004");
+		query.addQueryItem("DDDDD", loginData.user_account);
+		query.addQueryItem("upass", loginData.user_password);
+		query.addQueryItem("0MKKey", "123456");
+	}
+	else {
+		query.addQueryItem("user_account", loginData.user_account);
+		query.addQueryItem("user_password", loginData.user_password);
+	}
 	url.setQuery(query);
 	QNetworkRequest request(url);
 	QSslConfiguration sslConfig = request.sslConfiguration();
@@ -120,7 +136,6 @@ void AccountManager::onLogout()
 
 	QString localIp = DATAMAID.getLocalIp();
 
-	query.addQueryItem("wlan_user_ip", localIp);
 	//query.addQueryItem("user_account",DATAMAID.getCurUsername());
 	//query.addQueryItem("user_password", DATAMAID.getCurPassword());
 	url.setQuery(query);

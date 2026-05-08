@@ -31,6 +31,8 @@ public:
 	//解析校园网验证服务器ip
 	QString parseAuthServerIp(const QString& portalUrl);
 	QString parseServerUrl();
+	//获取当前网络连接方式是网线还是wifi
+	int curLinkMethod();
 	
 signals:
 	// 探测完成时发出此信号

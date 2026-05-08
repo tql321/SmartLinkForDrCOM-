@@ -49,6 +49,7 @@ int main(int argc, char* argv[])
 
 	QApplication::setOrganizationName(ORG_NAME);
 	QApplication::setApplicationName(APP_NAME);
+	QApplication::setApplicationVersion(APP_VERSION);
 	qRegisterMetaType<QList<UserEntity>>("QList<UserEntity>");
 	qRegisterMetaTypeStreamOperators<QList<UserEntity>>("QList<UserEntity>");
 	qRegisterMetaType<UserEntity>("UserEntity");

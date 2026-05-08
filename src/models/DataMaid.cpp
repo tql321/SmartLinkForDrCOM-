@@ -41,7 +41,7 @@ void DataMaid::memberIni()
 	m_enableAutoLoginCB = ConfigHelper::getSetting("enableAutoLoginCB", true).toBool();
 	m_enableForceLogin = ConfigHelper::getSetting("enableForceLogin", true).toBool();
 	m_authServerIp = ConfigHelper::getSetting("authServerIp", "192.168.125.13").toString();
-	m_authAddress = "https://" + m_authServerIp + ":802/eportal/portal/login";
+	m_authAddress = "https://" + m_authServerIp + "/drcom/login";
 	m_logoutAddress = "https://" + m_authServerIp + ":802/eportal/portal/logout";
 	m_networkType = ConfigHelper::getSetting("networkType", "").toString();//默认校园网
 	// 启动时同步开机自启状态到注册表

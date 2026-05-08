@@ -59,7 +59,9 @@ public:
 	QString getLocalIp() const;
 	QString getlogoutAddress()const {return m_logoutAddress;}
 	QString getNetworkType() const { return m_networkType; }
-	
+	void setAuthAddress(const QString& address) {
+		m_authAddress = address;
+	}
 
 private:
 	qint32 m_simulatedBrowseInterval;

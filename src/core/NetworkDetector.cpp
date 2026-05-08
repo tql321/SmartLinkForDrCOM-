@@ -344,3 +344,21 @@ QString NetworkDetector::parseServerUrl()
 	reply->deleteLater();
 	return targetUrl;
 }
+int NetworkDetector::curLinkMethod() {
+	// 是 wifi 返回 1, 是网线返回 2, 其他返回 0
+	QList<QNetworkInterface> interfaces = QNetworkInterface::allInterfaces();
+	for (const QNetworkInterface &interface : interfaces) {
+		if (interface.flags().testFlag(QNetworkInterface::IsUp) &&
+			interface.flags().testFlag(QNetworkInterface::IsRunning) &&
+			!interface.flags().testFlag(QNetworkInterface::IsLoopBack)) {
+
+			QNetworkInterface::InterfaceType type = interface.type();
+			if (type == QNetworkInterface::Wifi) {
+				return 1;
+			} else if (type == QNetworkInterface::Ethernet) {
+				return 2;
+			}
+		}
+	}
+	return 0;
+}

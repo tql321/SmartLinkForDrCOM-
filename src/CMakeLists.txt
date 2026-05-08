@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
-project(SmartLinkForDrCOM LANGUAGES CXX)
+project(SmartLinkForDrCOM LANGUAGES CXX VERSION 1.0.0)
 set(MY_ORG_NAME "tql")
 set(MY_APP_NAME "SmartLinkForDrCOM")
+set(MY_APP_VERSION "${PROJECT_VERSION}")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -28,6 +29,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 target_compile_definitions(${PROJECT_NAME} PRIVATE 
     ORG_NAME="${MY_ORG_NAME}"
     APP_NAME="${MY_APP_NAME}"
+    APP_VERSION="${MY_APP_VERSION}"
 )
 if(WIN32)
 set(OPENSSL_DLL_CRYPTO "${CMAKE_SOURCE_DIR}/openssl1.1.1-x64/libcrypto-1_1.dll")
